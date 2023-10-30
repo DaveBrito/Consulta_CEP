@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Consulta de CEP</title>
+</head>
+<body>
+    <h1>Consulta de CEP</h1>
+
+    <label for="cepInput">Digite o CEP:</label>
+    <input type="text" id="cepInput" placeholder="Digite o CEP" maxlength="8">
+    <button id="buscarButton" onclick="buscarCEP()">Buscar</button>
+
+    <div id="resultado"></div> 
+
+    <script>
+        function buscarCEP() {
+            const cep = document.getElementById('cepInput').value;
+            const url = `https://viacep.com.br/ws/${cep}/json/`;
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    const resultado = document.getElementById('resultado');
+                    resultado.innerHTML = `
+                        <h2>Resultado da consulta para CEP ${cep}</h2>
+                        <p>Bairro: ${data.bairro}</p>
+                        <p>Cidade: ${data.localidade}</p>
+                        <p>Estado: ${data.uf}</p>
+                        <p>Logradouro: ${data.logradouro}</p>
+                    `;
+                })
+                .catch((error) => {
+                    const resultado = document.getElementById('resultado');
+                    resultado.innerHTML = "<p>Erro ao buscar o CEP.</p>";
+                });
+        }
+    </script>
+</body>
+</html>
